@@ -1,0 +1,34 @@
+main = { SOI ~ main_seq ~ EOI }
+
+main_seq = {
+	(expression)*
+}
+
+expression = {
+	var_def
+	~ eof?
+}
+ws = _{ " " }
+eof = {
+	"\n"
+}
+com = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+
+var_type = {
+	"i8"
+	| "i16"
+	| "i32"
+	| "i64"
+	| "u8"
+	| "u16"
+	| "u32"
+	| "u64"
+}
+
+var_name = {
+	ASCII_ALPHA ~ (ASCII_DIGIT | ASCII_ALPHA | "-" | "_")*
+}
+
+var_def = {
+	"let" ~ ws* ~ var_name ~ ":" ~ ws* ~ var_type ~ ws* ~ ";"
+}
